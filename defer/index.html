@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="js/angular.js"></script>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script>
+    var name = null;
+    function ajax(url){
+        var defer = $.Deferred();
+        $.ajax({
+            url: url,
+            success: function(data){
+                defer.resolve(data);
+            },
+            error: function(){
+                defer.reject('reject');
+            }
+        })
+        return defer.promise();
+    }
+
+    var fn1 = ajax('data/data.json');
+    var fn2 = ajax('data/data2.json');
+
+    fn1.then(function(data1){
+        name = data1.name;
+        console.log(data1)
+        return fn2
+    }).then(function(data2){
+        console.log(name+':'+data2.age);
+    })
+
+</script>
+</body>
+</html>
